@@ -1,7 +1,7 @@
 {
   "name": "wkr",
   "productName": "WKR",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Wechat Keywords Reply",
   "main": "app/main/dist/index.cjs",
   "scripts": {
@@ -31,6 +31,7 @@
     "@types/react-dom": "^17.0.11",
     "@vitejs/plugin-react": "^1.1.1",
     "autoprefixer": "^10.4.0",
+    "cross-env": "^7.0.3",
     "electron": "^16.0.4",
     "electron-builder": "^22.14.5",
     "eslint": "^8.4.1",

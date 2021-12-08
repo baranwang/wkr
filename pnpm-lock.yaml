@@ -9,6 +9,7 @@ specifiers:
   ahooks: ^3.0.0
   antd: ^4.17.2
   autoprefixer: ^10.4.0
+  cross-env: ^7.0.3
   electron: ^16.0.4
   electron-builder: ^22.14.5
   electron-log: ^4.4.1
@@ -46,6 +47,7 @@ devDependencies:
   '@types/react-dom': 17.0.11
   '@vitejs/plugin-react': 1.1.1
   autoprefixer: 10.4.0
+  cross-env: 7.0.3
   electron: 16.0.4
   electron-builder: 22.14.5
   eslint: 8.4.1
@@ -1953,6 +1955,14 @@ packages:
       buffer: 5.7.1
     dev: true
     optional: true
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+    dev: true
 
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
