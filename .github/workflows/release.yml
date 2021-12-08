@@ -23,6 +23,8 @@ jobs:
           node-version: 16.x
           cache: pnpm
 
+      - run: pnpm install
+
       - run: npm run build
 
   release:
