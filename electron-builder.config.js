@@ -6,7 +6,7 @@ const { productName } = require("./package.json");
 const config = {
   productName,
   asar: true,
-  files: ["app/**/dist/**"],
+  files: ["**/dist/**"],
   win: {
     target: [
       {
