@@ -128,4 +128,3 @@ dist
 # app
 *.module.less*.d.ts
 app/package*.json
-build/license*

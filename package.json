@@ -7,14 +7,10 @@
   "scripts": {
     "watch": "node scripts/watch.js",
     "compile": "electron-builder build -w -c electron-builder.config.js",
-    "preinstall": "npx -y only-allow pnpm",
-    "postinstall": "npm run update-electron-vendors",
-    "prewatch": "npm run buildmake",
     "build": "node scripts/build.js",
-    "prebuild": "npm run buildmake",
-    "buildmake": "node scripts/make-package-json.js && node scripts/licenses.js",
-    "update-electron-vendors": "node scripts/update-electron-vendors.js",
-    "precompile": "cross-env MODE=production npm run build"
+    "prebuild": "node scripts/make-package-json.js",
+    "precompile": "cross-env MODE=production npm run build",
+    "postinstall": "node scripts/update-electron-vendors.js"
   },
   "repository": {
     "type": "git",
