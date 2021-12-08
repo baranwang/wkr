@@ -1,25 +1,29 @@
 {
-  "name": "wechat-keywords-reply",
-  "productName": "Wechat Keywords Reply",
-  "version": "1.0.0",
-  "description": "",
+  "name": "wkr",
+  "productName": "WKR",
+  "version": "0.0.0",
+  "description": "Wechat Keywords Reply",
   "main": "app/main/dist/index.cjs",
   "scripts": {
-    "preinstall": "npx -y only-allow pnpm",
-    "build": "node scripts/build.js",
     "watch": "node scripts/watch.js",
+    "compile": "electron-builder build -w -c electron-builder.config.js",
+    "preinstall": "npx -y only-allow pnpm",
+    "postinstall": "npm run update-electron-vendors",
     "prewatch": "npm run buildmake",
+    "build": "node scripts/build.js",
     "prebuild": "npm run buildmake",
     "buildmake": "node scripts/make-package-json.js",
     "update-electron-vendors": "node scripts/update-electron-vendors.js",
-    "postinstall": "npm run update-electron-vendors",
-    "precompile": "cross-env MODE=production npm run build",
-    "compile": "electron-builder build -w -c electron-builder.config.js"
+    "precompile": "cross-env MODE=production npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/baranwang/wkr.git"
+  },
+  "license": "ISC",
   "browserslist": [
     "Chrome 96"
   ],
-  "license": "ISC",
   "devDependencies": {
     "@guanghechen/postcss-modules-dts": "^1.8.5",
     "@types/qrcode": "^1.4.1",

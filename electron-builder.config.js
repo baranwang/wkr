@@ -22,10 +22,9 @@ const config = {
     uninstallDisplayName: productName,
   },
   publish: [
-    // TODO
     {
       provider: "generic",
-      url: "https://pia-player.baran.wang/api/update",
+      url: "https://wkr.vercel.app/api/update",
       publishAutoUpdate: true,
     },
     {
