@@ -12,7 +12,7 @@
     "prewatch": "npm run buildmake",
     "build": "node scripts/build.js",
     "prebuild": "npm run buildmake",
-    "buildmake": "node scripts/make-package-json.js",
+    "buildmake": "node scripts/make-package-json.js && node scripts/licenses.js",
     "update-electron-vendors": "node scripts/update-electron-vendors.js",
     "precompile": "cross-env MODE=production npm run build"
   },

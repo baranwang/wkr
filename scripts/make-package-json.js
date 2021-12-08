@@ -1,10 +1,15 @@
-const pkg = require('../package.json');
-const fs = require('fs');
+const pkg = require("../package.json");
+const fs = require("fs");
 
 /**
  * @type {Array<keyof typeof pkg['dependencies']>}
  */
-const dependencieNames = ['electron-log', 'electron-updater'];
+const dependencieNames = [
+  "electron-log",
+  "electron-updater",
+  "wechaty",
+  "wechaty-puppet-wechat",
+];
 
 const dependencies = Object.fromEntries(
   Object.entries(pkg.dependencies).filter(([name]) =>
@@ -18,10 +23,10 @@ const dependencies = Object.fromEntries(
    */
   const json = {
     ...pkg,
-    main: 'main/dist/index.cjs',
+    main: "main/dist/index.cjs",
     scripts: {},
     devDependencies: {},
     dependencies,
   };
-  fs.writeFileSync('./app/package.json', JSON.stringify(json), 'utf-8');
+  fs.writeFileSync("./app/package.json", JSON.stringify(json), "utf-8");
 })();
