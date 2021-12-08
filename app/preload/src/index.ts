@@ -10,3 +10,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
   invoke: ipcRenderer.invoke.bind(ipcRenderer),
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  ipcRenderer.invoke("botStart")
+})

@@ -5,13 +5,13 @@ const { productName } = require("./package.json");
  */
 const config = {
   productName,
-  asar: true,
+  asar: false,
   files: ["**/dist/**"],
   win: {
     target: [
       {
         target: "nsis",
-        arch: ["x64", "ia32", "arm64"],
+        arch: ["x64", "ia32"],
       },
     ],
   },
@@ -20,6 +20,9 @@ const config = {
     perMachine: true,
     allowToChangeInstallationDirectory: true,
     uninstallDisplayName: productName,
+  },
+  mac:{
+    target: ['zip']
   },
   publish: [
     {

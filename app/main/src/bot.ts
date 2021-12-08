@@ -1,6 +1,7 @@
 import { app, ipcMain } from 'electron'
 import { ScanStatus, WechatyBuilder } from 'wechaty'
 import * as path from 'path'
+import log from 'electron-log';
 
 const pkg = import('../../../package.json')
 
@@ -17,6 +18,10 @@ export class Bot {
   constructor(
     private mainWindow: Electron.BrowserWindow
   ) {
+    this.bot.on('heartbeat', () => {
+      log.info('[Bot]', 'heartbeat')
+    })
+
     this.bot.on('scan', (qrcode, status) => {
       this.mainWindow.webContents.send('scan', qrcode, status)
       switch (status) {
@@ -40,15 +45,10 @@ export class Bot {
         avatar
       })
     })
+  }
 
-    ipcMain.on('logout', () => {
-      this.bot.logout()
-    })
-
-    ipcMain.handle('room.findAll', async () => {
-      const rooms = await this.bot.Room.findAll()
-      return rooms.map(room => room.payload)
-    })
+  get Room() {
+    return this.bot.Room
   }
 
   public start() {
@@ -57,9 +57,5 @@ export class Bot {
 
   public logout() {
     return this.bot.logout()
-  }
-
-  get Room() {
-    return this.bot.Room
   }
 }

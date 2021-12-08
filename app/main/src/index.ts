@@ -28,7 +28,9 @@ const createWindow = () => {
 
   mainWindow.loadURL(pageURL);
 
-  mainWindow.webContents.toggleDevTools();
+  if (isDevelopment) {
+    mainWindow.webContents.toggleDevTools();
+  }
 }
 
 app.on('ready', createWindow);
@@ -49,10 +51,19 @@ app.on('new-window-for-tab', () => {
 
 app.whenReady().then(async () => {
   autoUpdater.checkForUpdatesAndNotify();
-
   const bot = new Bot(mainWindow);
 
   const rulesPath = getRulesPath()
+
+  ipcMain.handle('botStart', async () => {
+    log.info('[bot]', 'Starting bot...')
+    try {
+      await bot.start();
+      log.info('[bot]', 'Bot started')
+    } catch (error) {
+      log.error('[bot]', JSON.stringify(error))
+    }
+  })
 
   ipcMain.handle('getRules', () => getRulesList())
 
@@ -61,12 +72,32 @@ app.whenReady().then(async () => {
     return fs.writeFileSync(filePath, JSON.stringify(rules));
   })
 
+  let ready = false;
+
+  bot.bot.on('ready', () => {
+    ready = true;
+  })
+
+  ipcMain.handle('botReady', () => {
+    return ready;
+  })
+
+  ipcMain.on('logout', () => {
+    bot.logout()
+  })
+
+  ipcMain.handle('room.findAll', async () => {
+    const rooms = await bot.Room.findAll()
+    return rooms.map(room => room.payload)
+  })
+
   ipcMain.handle('getRoom', async (event, roomID: string) => {
     const room = await bot.Room.find({ id: roomID })
     return room?.payload;
   })
 
   ipcMain.on('startRoomListener', () => {
+    if (!ready) return
     log.info('[listener]', 'Starting room listener');
     getRulesList().forEach(rules => {
       bot.Room.find({ id: rules.roomID }).then(room => {
@@ -102,6 +133,4 @@ app.whenReady().then(async () => {
       })
     })
   })
-
-  await bot.start();
 })

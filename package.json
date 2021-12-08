@@ -6,7 +6,7 @@
   "main": "app/main/dist/index.cjs",
   "scripts": {
     "watch": "node scripts/watch.js",
-    "compile": "electron-builder build -w -c electron-builder.config.js",
+    "compile": "electron-builder build -wm -c electron-builder.config.js",
     "build": "node scripts/build.js",
     "prebuild": "node scripts/make-package-json.js",
     "precompile": "cross-env MODE=production npm run build",

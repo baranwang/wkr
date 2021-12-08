@@ -18,7 +18,7 @@ const handlerHtml = (mainLicense, licenses) => {
   ].join("\n");
 
   const main = [
-    `<h3>PIA Player license</h3>`,
+    `<h3>WKR license</h3>`,
     `<pre>${mainLicense}</pre>`,
     `<h3>Bundled dependencies</h3>`,
   ].join("\n");
