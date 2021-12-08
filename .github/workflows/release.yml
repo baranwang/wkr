@@ -8,7 +8,27 @@ permissions:
   contents: write
 
 jobs:
+  test-build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.23.6
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: pnpm
+
+      - run: npm run build
+
   release:
+    needs:
+      - test-build
+
     runs-on: windows-latest
 
     steps:

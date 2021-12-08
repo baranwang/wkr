@@ -21,9 +21,6 @@ const config = {
     allowToChangeInstallationDirectory: true,
     uninstallDisplayName: productName,
   },
-  mac:{
-    target: ['zip']
-  },
   publish: [
     {
       provider: "generic",
