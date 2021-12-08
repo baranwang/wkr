@@ -49,7 +49,7 @@ export default defineConfig({
       ]
     },
     modules: {
-      ...dts()
+      ...(isDevelopment ? dts() : {})
     },
   }
 });
