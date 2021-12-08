@@ -1,7 +1,7 @@
 {
   "name": "wkr",
   "productName": "WKR",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Wechat Keywords Reply",
   "main": "app/main/dist/index.cjs",
   "scripts": {
