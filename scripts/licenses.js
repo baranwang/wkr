@@ -92,5 +92,4 @@ const handlerHtml = (mainLicense, licenses) => {
   );
 
   handlerHtml(mainLicense, licenses);
-  handlerTxt(mainLicense, licenses);
 })();
