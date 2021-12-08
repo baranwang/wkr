@@ -1,16 +1,17 @@
+const { productName } = require("./package.json");
 /**
  * @type {import('electron-builder').Configuration}
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
-  productName: '扣排神器',
+  productName,
   asar: true,
-  files: ['app/**/dist/**'],
+  files: ["app/**/dist/**"],
   win: {
     target: [
       {
-        target: 'nsis',
-        arch: ['x64', 'ia32', 'arm64'],
+        target: "nsis",
+        arch: ["x64", "ia32", "arm64"],
       },
     ],
   },
@@ -21,14 +22,15 @@ const config = {
     uninstallDisplayName: productName,
   },
   publish: [
+    // TODO
     {
-      provider: 'generic',
-      url: 'https://pia-player.baran.wang/api/update',
+      provider: "generic",
+      url: "https://pia-player.baran.wang/api/update",
       publishAutoUpdate: true,
     },
     {
-      provider: 'github',
-      releaseType: 'release',
+      provider: "github",
+      releaseType: "release",
     },
   ],
 };
