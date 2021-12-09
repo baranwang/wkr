@@ -10,13 +10,18 @@
     "build": "node scripts/build.js",
     "prebuild": "node scripts/make-package-json.js",
     "precompile": "cross-env MODE=production npm run build",
-    "postinstall": "node scripts/update-electron-vendors.js"
+    "postinstall": "node scripts/update-electron-vendors.js",
+    "build-license": "node scripts/licenses.js"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/baranwang/wkr.git"
   },
-  "license": "ISC",
+  "license": "MIT",
+  "author": {
+    "name": "Baran Wang",
+    "email": "me@baran.wang"
+  },
   "browserslist": [
     "Chrome 96"
   ],

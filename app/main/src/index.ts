@@ -1,8 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Notification } from 'electron'
 import * as path from 'path'
 import * as fs from 'fs';
 import { Bot } from './bot';
-import { getRulesList, getRulesPath } from './utils';
+import { getRulesList, getRulesPath, sleep } from './utils';
 import log from 'electron-log';
 import { autoUpdater } from "electron-updater"
 
@@ -99,38 +99,51 @@ app.whenReady().then(async () => {
   ipcMain.on('startRoomListener', () => {
     if (!ready) return
     log.info('[listener]', 'Starting room listener');
-    getRulesList().forEach(rules => {
-      bot.Room.find({ id: rules.roomID }).then(room => {
-        log.info('[listener]', 'Remove listen', rules.roomID);
-        room?.removeAllListeners('message')
-        log.info('[listener]', 'Listening to room', rules.roomID);
-        room?.on('message', message => {
-          let text = message.text()
-          log.verbose('[message]', text);
+    getRulesList().forEach(async rules => {
+      const room = await bot.Room.find({ id: rules.roomID })
 
-          if (message.self()) return
+      log.info('[listener]', 'Remove listen', rules.roomID);
+      room?.removeAllListeners('message')
+      await sleep(1000)
 
-          const textList = text.split('<br/>- - - - - - - - - - - - - - -<br/>')
-          text = textList[textList.length - 1]
+      const topic = await room?.topic()
 
-          if (rules.members && rules.members.length) {
-            if (!rules.members.includes(message.from()?.id || '')) {
-              return;
-            }
+      log.info('[listener]', 'Listening to room', rules.roomID);
+      room?.on('message', message => {
+        let text = message.text()
+        log.verbose('[message]', text);
+
+        if (message.self()) return
+
+        const textList = text.split('<br/>- - - - - - - - - - - - - - -<br/>')
+        text = textList[textList.length - 1]
+
+        if (rules.members && rules.members.length) {
+          if (!rules.members.includes(message.from()?.id || '')) {
+            return;
           }
-          let isHit = false;
-          const hitKeywords = rules.keywords.filter(keyword => text.includes(keyword))
-          if (rules.keywordsMode === 'all') {
-            isHit = hitKeywords.length === rules.keywords.length
+        }
+        let isHit = false;
+        const hitKeywords = rules.keywords.filter(keyword => text.includes(keyword))
+        if (rules.keywordsMode === 'all') {
+          isHit = hitKeywords.length === rules.keywords.length
+        }
+        if (rules.keywordsMode === 'include') {
+          isHit = hitKeywords.length > 0
+        }
+        if (isHit) {
+          room?.say(rules.content)
+
+          if (Notification.isSupported()) {
+            new Notification({
+              title: '触发自动回复信息',
+              body: `${topic ? `[${topic}] ` : ''}发送：${rules.content}`,
+              silent: false,
+            }).show()
           }
-          if (rules.keywordsMode === 'include') {
-            isHit = hitKeywords.length > 0
-          }
-          if (isHit) {
-            room?.say(rules.content)
-          }
-        })
+        }
       })
+
     })
   })
 })

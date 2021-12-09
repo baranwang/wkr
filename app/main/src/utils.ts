@@ -13,3 +13,5 @@ export const getRulesList = () => {
   const files = fs.readdirSync(rulesPath);
   return files.map(file => JSON.parse(fs.readFileSync(path.resolve(rulesPath, file), 'utf8')) as RoomRules)
 }
+
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
