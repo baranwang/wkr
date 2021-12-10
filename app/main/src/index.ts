@@ -69,7 +69,14 @@ app.whenReady().then(async () => {
 
   ipcMain.handle('saveRules', (event, rules: RoomRules) => {
     const filePath = path.resolve(rulesPath, rules.roomID + '.json');
+    log.info('[rules]', 'Saving rules', filePath)
     return fs.writeFileSync(filePath, JSON.stringify(rules));
+  })
+
+  ipcMain.handle('deleteRules', (event, roomID: string) => {
+    const filePath = path.resolve(rulesPath, roomID + '.json');
+    log.info('[rules]', 'Deleting rules ', roomID)
+    return fs.rmSync(filePath);
   })
 
   let ready = false;
@@ -100,16 +107,23 @@ app.whenReady().then(async () => {
     if (!ready) return
     log.info('[listener]', 'Starting room listener');
     getRulesList().forEach(async rules => {
+      if (!rules.enabled) return
+
       const room = await bot.Room.find({ id: rules.roomID })
 
+      if (!room) {
+        log.error('[listener]', 'Room not found', rules.roomID)
+        return
+      }
+
       log.info('[listener]', 'Remove listen', rules.roomID);
-      room?.removeAllListeners('message')
+      room.removeAllListeners('message')
       await sleep(1000)
 
       const topic = await room?.topic()
 
       log.info('[listener]', 'Listening to room', rules.roomID);
-      room?.on('message', message => {
+      room.on('message', message => {
         let text = message.text()
         log.verbose('[message]', text);
 
@@ -132,7 +146,7 @@ app.whenReady().then(async () => {
           isHit = hitKeywords.length > 0
         }
         if (isHit) {
-          room?.say(rules.content)
+          room.say(rules.content)
 
           if (Notification.isSupported()) {
             new Notification({

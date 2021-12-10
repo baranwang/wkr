@@ -1,4 +1,4 @@
-import { Button, Space, Table } from "antd";
+import { Button, Popconfirm, Space, Table } from "antd";
 import * as React from "react";
 import { Login } from "/@/components/Login";
 import { SelectRoom } from "/@/components/SelectRoom";
@@ -14,7 +14,7 @@ export const BotApp = () => {
   const [roomRulesDefault, setRoomRulesDefault] =
     React.useState<RoomRules | null>(null);
 
-  const { data } = useRequest<RoomRules[], any>(
+  const { data, refresh } = useRequest<RoomRules[], any>(
     () => window.ipcRenderer.invoke("getRules"),
     {
       refreshDeps: [roomRulesSettingID],
@@ -75,6 +75,18 @@ export const BotApp = () => {
                 >
                   编辑
                 </a>
+                <Popconfirm
+                  title="确定要删除该监控吗？"
+                  onConfirm={() => {
+                    window.ipcRenderer
+                      .invoke("deleteRules", record.roomID)
+                      .then(() => {
+                        refresh();
+                      });
+                  }}
+                >
+                  <a>删除</a>
+                </Popconfirm>
               </Space>
             ),
           },

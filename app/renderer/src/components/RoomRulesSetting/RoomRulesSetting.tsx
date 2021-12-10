@@ -1,4 +1,4 @@
-import { Button, Drawer, Form, Input, Radio, Select } from "antd";
+import { Button, Drawer, Form, Input, Radio, Select, Switch } from "antd";
 import * as React from "react";
 
 export const RoomRulesSetting: React.FC<{
@@ -25,6 +25,7 @@ export const RoomRulesSetting: React.FC<{
     <>
       <Drawer
         visible={!!roomID}
+        destroyOnClose
         extra={
           <Button
             type="primary"
@@ -40,6 +41,7 @@ export const RoomRulesSetting: React.FC<{
         <Form
           form={from}
           layout="vertical"
+          initialValues={{ enable: true, members: [] }}
           onFinish={(rules) => {
             onFinish?.(rules);
             onClose?.();
@@ -47,6 +49,9 @@ export const RoomRulesSetting: React.FC<{
         >
           <Form.Item name="roomID" noStyle>
             <Input type="hidden" />
+          </Form.Item>
+          <Form.Item name="enable" label="是否开启" valuePropName="checked">
+            <Switch />
           </Form.Item>
           <Form.Item
             label="关键词"
@@ -86,9 +91,9 @@ export const RoomRulesSetting: React.FC<{
             />
           </Form.Item>
           <Form.Item
-            label="指定成员"
+            label="指定成员（开发中）"
             name="members"
-            extra="为空则不限定发排成员"
+            extra="为空则不限定触发关键词成员"
           >
             <Select mode="multiple" />
           </Form.Item>
